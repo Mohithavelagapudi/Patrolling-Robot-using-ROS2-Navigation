@@ -59,7 +59,7 @@ Urban parking management is a persistent challenge, with illegal or improper par
 
 
 <p align="center">
-  <img src="parking_images/frame0000.jpg" alt="RViz Visualization" width="80%" style="border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.2);" />
+  <img src="parking_images/image (23).png" alt="RViz Visualization" width="80%" style="border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.2);" />
 </p>
 
 ---
