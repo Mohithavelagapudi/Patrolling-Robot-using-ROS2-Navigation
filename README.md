@@ -1,9 +1,8 @@
-# 🤖 Patrol-Robot: Intelligent Parking Lot Patrolling with ROS2 & SLAM
+# 🤖 Autonomous Patrol Robot for Smart Parking Enforcement Using ROS2 & SLAM
 
 ![ROS2](https://img.shields.io/badge/ROS2-Humble-blue?logo=ros)
 ![Gazebo](https://img.shields.io/badge/Simulator-Gazebo-yellow?logo=gazebo)
 ![Python](https://img.shields.io/badge/Python-3.8+-blue?logo=python)
-![License](https://img.shields.io/badge/license-MIT-green)
 
 
 > **Autonomous Parking Enforcement Robot**  
@@ -27,24 +26,94 @@ Urban parking management is a persistent challenge, with illegal or improper par
 
 ## 🚗 2. Navigation & Mapping
 
-SLAM Toolbox: Real-time mapping and localization using slam_toolbox (CeresSolver backend).
+- **SLAM Toolbox**: Real-time mapping and localization using slam_toolbox (CeresSolver backend).
+- **Path Planning**: Implemented with ROS2 Navigation Stack for patrol route execution.
+- **Simulation**: Urban parking lot world simulated in Gazebo (main.world, parking.world).
 
-Path Planning: Implemented with ROS2 Navigation Stack for patrol route execution.
+## 🚨 3. Violation Detection
 
-Simulation: Urban parking lot world simulated in Gazebo (main.world, parking.world).
+- **Rule-based Logic**: Detects improperly parked vehicles (e.g., blocking driveways, no-parking zones).
+- **Event Handling**: Triggers reporting once patrol goals are achieved.
 
-🚨 3. Violation Detection
+## 📡 4. Reporting
 
-Rule-based Logic: Detects improperly parked vehicles (e.g., blocking driveways, no-parking zones).
+- **ROS2 Node**: Publishes violation events and logs details.
+- **Notification System**: Sends alerts to owners or authorities (simulated).
+---
 
-Event Handling: Triggers reporting once patrol goals are achieved.
+## 🧰 Experimental Setup
 
-Machine Learning Extension (optional): Future versions may use CNNs for visual violation classification.
+| 🧩 **Component** | **Description** |
+|------------------|-----------------|
+| 🧱 **Simulation Environment** | Gazebo with custom parking lot worlds |
+| 🤖 **Robot Model** | Differential drive robot *(URDF/XACRO-based)* |
+| 🎯 **Sensors** | Lidar + RGB Camera |
+| 🗺️ **Mapping** | SLAM Toolbox *(outdoor-tuned parameters)* |
+| 🧩 **RViz Visualization** | Real-time 3D mapping and patrol path rendering |
 
-📡 4. Reporting
+---
 
-ROS2 Node: Publishes violation events and logs details.
+<p align="center">
+  <img src="parking_images/frame0000.jpg" alt="RViz Visualization" width="80%" style="border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.2);" />
+</p>
 
-Notification System: Sends alerts to owners or authorities (simulated).
+---
 
-Database Logging: Optional extension for violation storage and analytics.
+### 🎥 Simulation Video  
+If available, view **`Simulation.mp4`** for a full patrol demonstration.
+
+---
+
+### 🧩 Key Code Snippet – Violation Event Subscriber
+
+```python
+from rclpy.node import Node
+from lifecycle_msgs.msg import TransitionEvent
+
+class GoalStatusSubscriber(Node):
+    def __init__(self):
+        super().__init__('goal_status_subscriber')
+        self.subscription = self.create_subscription(
+            TransitionEvent,
+            '/bt_navigator/transition_event',
+            self.goal_status_callback,
+            10
+        )
+
+    def goal_status_callback(self, msg):
+        if msg.label == "Goal succeeded":
+            self.get_logger().info("Wrongly parked vehicles; Reporting to the owner")
+
+```
+## ⚙️ How to Run
+
+Follow the steps below to set up, build, and run the autonomous patrol simulation.  
+
+---
+
+### 🪄 Install Dependencies
+
+```bash
+sudo apt install ros-<distro>-gazebo-ros-pkgs ros-<distro>-slam-toolbox
+```
+
+### 🏗️ Build the Workspace
+
+```bash
+colcon build
+source install/setup.bash
+```
+### 🚀 Launch Simulation
+
+```bash
+ros2 launch my_rosject launch_sim.launch.py
+```
+### 🛰️ Visualize in RViz
+
+```bash
+rviz2 -d config/final_map.rviz
+```
+### 📡 Monitor Violation Events
+``` bash
+ros2 run my_rosject GoalStatusSubscriber.py
+```
