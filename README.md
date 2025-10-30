@@ -54,6 +54,11 @@ Urban parking management is a persistent challenge, with illegal or improper par
 ---
 
 <p align="center">
+  <em>Figure: Real-time 3D mapping and patrol path rendering in RViz during autonomous parking violation detection.</em>
+</p>
+
+
+<p align="center">
   <img src="parking_images/frame0000.jpg" alt="RViz Visualization" width="80%" style="border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.2);" />
 </p>
 
@@ -117,3 +122,4 @@ rviz2 -d config/final_map.rviz
 ``` bash
 ros2 run my_rosject GoalStatusSubscriber.py
 ```
+📘 *For further details, see the codebase and the simulation video for a complete patrol demonstration.*
